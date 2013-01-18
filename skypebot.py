@@ -72,10 +72,10 @@ class ChatHandler(object):
         return new_messages
 
 RUN_SKYPE = True
-ENABLE_TWITTER = True
+ENABLE_TWITTER = False
 ENABLE_GIFTS = True
-ENABLE_RADIO = True
-ENABLE_API = True
+ENABLE_RADIO = False
+ENABLE_API = False
 class BotThread( queuedthread.QueuedThread ):
     
     def __init__( self ):
@@ -155,7 +155,7 @@ class BotThread( queuedthread.QueuedThread ):
 
         if RUN_SKYPE:
             logging.info( "Attaching to Skype..." )
-            skype = Skype4Py.Skype(Transport='x11')
+            skype = Skype4Py.Skype()
             skype.Attach()
         
         self.chat_handlers = {}
@@ -163,29 +163,29 @@ class BotThread( queuedthread.QueuedThread ):
         while not self._abortflag:
             try:
                 if RUN_SKYPE:
-                    # maintain list of chats
-                    chats = skype.ActiveChats
-                    defunct_chat_names = set( self.chat_handlers.keys() )
-                    for chat in chats:
-                        chat_name = chat.Name
-                        try: 
-                            defunct_chat_names.remove( chat_name )
-                        except KeyError:
-                            pass
+                    chat_names = ['#zeroinfluencer/$64bbf68e30c91d3', '#martinspindler/$customdeluxe;762c77db9f493112', '#martinspindler/$c73d91ffa4742fc6', '#martinspindler/$8b70fd2f94c197b6']
+                    # defunct_chat_names = set( self.chat_handlers.keys() )
+                    for chat_name in chat_names:
+                        chat=skype.Chat(chat_name)
+                        # chat_name = chat.Name
+                        # try: 
+                        #     defunct_chat_names.remove( chat_name )
+                        # except KeyError:
+                        #     pass
                         if chat_name not in self.chat_handlers:
                             logging.info( "New handler for chat: %s" % chat.FriendlyName )
                             self.chat_handlers[chat_name] = ChatHandler(chat)
-                            message = housekeeping.new_chat_message()
-                            try:
-                                chat.SendMessage( message )
-                            except Exception, e:
-                                logging.info( e )
-                                print e
+                            # message = housekeeping.new_chat_message()
+                            # try:
+                            #     chat.SendMessage( message )
+                            # except Exception, e:
+                            #     logging.info( e )
+                            #     print e
 
                     # clear defunct chats
-                    for defunct_chat_name in defunct_chat_names:
-                        logging.info( "Delete handler for chat: %s" % defunct_chat_name )
-                        del self.chat_handlers[ defunct_chat_name ]
+                    # for defunct_chat_name in defunct_chat_names:
+                    #     logging.info( "Delete handler for chat: %s" % defunct_chat_name )
+                    #     del self.chat_handlers[ defunct_chat_name ]
                     
                     # update chats
                     for chat_name in self.chat_handlers:
@@ -246,18 +246,18 @@ class BotThread( queuedthread.QueuedThread ):
                                     logging.info( e )
                                     print e
                     
-                    # update from twitter
-                    if ENABLE_TWITTER:
-                        new_statuses = self.twitter_connector.pop_stream()
-                        for status_in in new_statuses:
-                            try:
-                                message_out = streetnoise.message_for_incoming_status( status_in )
-                                if message_out:
-                                    self.message_all( message_out )
-                                    if ENABLE_RADIO:
-                                        self.send_radio( message_out, status_in.id_str )
-                            except Exception, e:
-                                logging.info( e )
+                    # # update from twitter
+                    # if ENABLE_TWITTER:
+                    #     new_statuses = self.twitter_connector.pop_stream()
+                    #     for status_in in new_statuses:
+                    #         try:
+                    #             message_out = streetnoise.message_for_incoming_status( status_in )
+                    #             if message_out:
+                    #                 self.message_all( message_out )
+                    #                 if ENABLE_RADIO:
+                    #                     self.send_radio( message_out, status_in.id_str )
+                    #         except Exception, e:
+                    #             logging.info( e )
 
                     # update from api
                     if ENABLE_API:

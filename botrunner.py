@@ -38,7 +38,7 @@ hook_server.portnumber = 31337
 hook_server.start()
 
 # monitor this branch only
-GIT_BRANCH = "master"
+GIT_BRANCH = "local"
 
 # run bot
 try:

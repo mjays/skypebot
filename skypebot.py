@@ -163,7 +163,7 @@ class BotThread( queuedthread.QueuedThread ):
         while not self._abortflag:
             try:
                 if RUN_SKYPE:
-                    chat_names = ['#zeroinfluencer/$64bbf68e30c91d3', '#martinspindler/$customdeluxe;762c77db9f493112', '#martinspindler/$c73d91ffa4742fc6', '#martinspindler/$8b70fd2f94c197b6']
+                    chat_names = ['#zeroinfluencer/$cb73275a2f44778d']
                     # defunct_chat_names = set( self.chat_handlers.keys() )
                     for chat_name in chat_names:
                         chat=skype.Chat(chat_name)

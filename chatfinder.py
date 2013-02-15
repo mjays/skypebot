@@ -21,4 +21,4 @@ skype.Attach()
 print "Attachment status is " + str(skype.AttachmentStatus)
 chats = skype.RecentChats
 for chat in chats:
-	print chat.Name
+	print "Chat: " + chat.FriendlyName + "\n Skype Handle: " + chat.Name

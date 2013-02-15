@@ -13,7 +13,13 @@ To force Python to run in 32bit mode, please follow [these instructions](https:/
 2) Since the Skype Desktop API on OS X does not support ActiveChats(), please run chatfinder.py, copy the SkypeHandle you want the bot to attach to, and copy the handle into the array in line 166 in skypebot.py
 3) Open a console window and run 'python skypebot.py'
 
-Volia!  
+Voila!
+
+Not currently working on OS X:
+
+Automatic restart on received post-receive.
+Twitter integration.
+ 
 
 
 NOTE TO COMMAND-CONTRIBUTORS:
